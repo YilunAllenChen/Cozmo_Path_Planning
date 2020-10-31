@@ -2,6 +2,7 @@ import cozmo
 import math
 import sys
 import time
+import numpy as np
 
 from cmap import *
 from gui import *
@@ -19,10 +20,11 @@ def step_from_to(node0, node1, limit=75):
     #    limit units at most
     # 3. Hint: please consider using np.arctan2 function to get vector angle
     # 4. Note: remember always return a Node object
-    
-    
-    #temporary cod below to be replaced
-    return node1
+    if get_dist(node0, node1) < limit:
+        return node1
+    else:
+        theta = np.arctan2(node0.y - node1.y, node0.x - node1.x)
+        return Node((node0.x + limit * math.cos(theta), node0.y + limit * math.sin(theta)))
     ############################################################################
 
     
@@ -150,11 +152,19 @@ def get_global_node(local_angle, local_origin, node):
     """
     ########################################################################
     # TODO: please enter your code below.
-    
-    
-    
+    t = np.zeros((3,3))
+    t[0, 0] = math.cos(local_angle)
+    t[0, 1] = -math.sin(local_angle)
+    t[0, 2] = local_origin.x
+    t[1, 0] = math.sin(local_angle)
+    t[1, 1] = math.cos(local_angle)
+    t[1, 2] = local_origin.y
+    t[2, 2] = 1
+
+    new_coord = t * (np.array(node.x, node.y, 1).T)
+
     #temporary code below to be replaced
-    new_node = None
+    new_node = Node((new_coord.reshape(-1)[0], new_coord.reshape(-1)[1]))
     return new_node
     ########################################################################
 
