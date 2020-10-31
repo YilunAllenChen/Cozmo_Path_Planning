@@ -71,11 +71,18 @@ def RRT(cmap, start):
         # 4. Add one path from nearest node to random node
         #
         
-        
         #temporary code below to be replaced
-        rand_node = None
+        rand_node = cmap.get_random_valid_node()
         nearest_node = None
-        pass
+        min_dist = float('inf')
+        for node in cmap.get_nodes:
+            dist = get_dist(node, rand_node)
+            if dist < min_dist:
+                min_dist = dist
+                nearest_node = node
+        new_node = step_from_to(nearest_node, rand_node)
+        cmap.add_node(new_node)
+        cmap.add_path(nearest_node, new_node)
         ########################################################################
         
         
