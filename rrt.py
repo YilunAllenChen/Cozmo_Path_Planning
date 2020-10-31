@@ -121,18 +121,24 @@ async def CozmoPlanning(robot: cozmo.robot.Robot):
     #assume start angle is 0
     #Add final position as goal point to cmap, with final position being defined as a point that is at the center of the arena 
     #you can get map width and map weight from cmap.get_size()
+    map_width, map_height = cmap.get_size()
+    final_pos = (map_width / 2, map_height / 2)
 
-    
     #reset the current stored paths in cmap
+    cmap.reset_paths()
     #call the RRT function using your cmap as input, and RRT will update cmap with a new path to the target from the start position
+    RRT(cmap, cmap.get_start())
     #get path from the cmap
- 
+    path = cmap.get_path()
     
     
     #marked and update_cmap are both outputted from detect_cube_and_update_cmap(robot, marked, cozmo_pos).
+
     #and marked is an input to the function, indicating which cubes are already marked
     #So initialize "marked" to be an empty dictionary and "update_cmap" = False
-
+    marked = {}
+    update_cmap = False
+    marked, update_cmap = detect_cube_and_update_cmap(robot, marked, robot.)
     
     #while the current cosmo position is not at the goal:
     
@@ -292,7 +298,7 @@ if __name__ == '__main__':
         robot_thread = RobotThread()
         robot_thread.start()
     else:
-        cmap = CozMap("maps/map1.json", node_generator)
+        cmap = CozMap("maps/map6.json", node_generator)
         sim = RRTThread()
         sim.start()
     visualizer = Visualizer(cmap)
