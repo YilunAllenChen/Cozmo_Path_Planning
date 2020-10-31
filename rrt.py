@@ -8,6 +8,9 @@ from cmap import *
 from gui import *
 from utils import *
 
+from random import random, choice
+import numpy as np
+
 MAX_NODES = 20000
 
 
@@ -29,11 +32,9 @@ def step_from_to(node0, node1, limit=75):
 
     
     
-    
 
 
 def node_generator(cmap):
-    rand_node = None
     ############################################################################
     # TODO: please enter your code below.
     # 1. Use CozMap width and height to get a uniformly distributed random node
@@ -41,9 +42,17 @@ def node_generator(cmap):
     #    legitimacy of the random node.
     # 3. Note: remember always return a Node object
     
-    
+
+    rand_node = None
+    while rand_node is None or not cmap.is_inbound(rand_node) or cmap.is_inside_obstacles(rand_node):
+        if random() < 0.05:
+            # print("generating a target node")
+            target_coord = (choice(cmap.get_goals()).coord)
+        else:
+            # print('generate a random node')
+            target_coord = (int(random()*cmap.width), int(random()*cmap.height))
+        rand_node = Node(target_coord)
     #temporary cod below to be replaced
-    pass
     return rand_node
     ############################################################################
     
@@ -256,23 +265,31 @@ class RRTThread(threading.Thread):
 
 
 if __name__ == '__main__':
-    global cmap, stopevent
-    stopevent = threading.Event()
-    robotFlag = False
-    for i in range(0,len(sys.argv)): #reads input whether we are running the robot version or not
-        if (sys.argv[i] == "-robot"):
-            robotFlag = True
-    if (robotFlag):
-        #creates cmap based on empty grid json
-        #"start": [50, 35],
-        #"goals": [] This is empty
-        cmap = CozMap("maps/emptygrid.json", node_generator) 
-        robot_thread = RobotThread()
-        robot_thread.start()
-    else:
-        cmap = CozMap("maps/map2.json", node_generator)
-        sim = RRTThread()
-        sim.start()
-    visualizer = Visualizer(cmap)
-    visualizer.start()
-    stopevent.set()
+    global cmap
+    cmap = CozMap("maps/map1.json", node_generator) 
+    node_generator(cmap)
+    viz = Visualizer(cmap)
+    viz.start()
+
+
+# if __name__ == '__main__':
+#     global cmap, stopevent
+#     stopevent = threading.Event()
+#     robotFlag = False
+#     for i in range(0,len(sys.argv)): #reads input whether we are running the robot version or not
+#         if (sys.argv[i] == "-robot"):
+#             robotFlag = True
+#     if (robotFlag):
+#         #creates cmap based on empty grid json
+#         #"start": [50, 35],
+#         #"goals": [] This is empty
+#         cmap = CozMap("maps/emptygrid.json", node_generator) 
+#         robot_thread = RobotThread()
+#         robot_thread.start()
+#     else:
+#         cmap = CozMap("maps/map2.json", node_generator)
+#         sim = RRTThread()
+#         sim.start()
+#     visualizer = Visualizer(cmap)
+#     visualizer.start()
+#     stopevent.set()
