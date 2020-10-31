@@ -45,13 +45,16 @@ def node_generator(cmap):
 
     rand_node = None
     while rand_node is None or not cmap.is_inbound(rand_node) or cmap.is_inside_obstacles(rand_node):
-        if random() < 0.05:
+        pos = random()
+        if pos < 0.05:
             # print("generating a target node")
-            target_coord = (choice(cmap.get_goals()).coord)
+            target_coord = choice(cmap.get_goals()).coord
         else:
             # print('generate a random node')
-            target_coord = (int(random()*cmap.height), int(random()*cmap.width))
+            target_coord = (random()*cmap.width, (random()*cmap.height))
         rand_node = Node(target_coord)
+    if rand_node.x > 650 or rand_node.x < 0 or rand_node.y > 450 or rand_node.y < 0: 
+        print(rand_node.coord)
     #temporary cod below to be replaced
     return rand_node
     ############################################################################
@@ -81,8 +84,12 @@ def RRT(cmap, start):
                 min_dist = dist
                 nearest_node = node
         new_node = step_from_to(nearest_node, rand_node)
-        cmap.add_node(new_node)
-        cmap.add_path(nearest_node, new_node)
+
+
+        if cmap.is_inbound(new_node) and not cmap.is_inside_obstacles(new_node):
+            if not cmap.is_collision_with_obstacles((nearest_node, new_node)):
+                cmap.add_node(new_node)
+                cmap.add_path(nearest_node, new_node)
         ########################################################################
         
         
