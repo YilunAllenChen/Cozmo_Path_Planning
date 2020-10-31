@@ -45,16 +45,13 @@ def node_generator(cmap):
 
     rand_node = None
     while rand_node is None or not cmap.is_inbound(rand_node) or cmap.is_inside_obstacles(rand_node):
-        pos = random()
-        if pos < 0.05:
+        if random() < 0.05:
             # print("generating a target node")
             target_coord = choice(cmap.get_goals()).coord
         else:
             # print('generate a random node')
             target_coord = (random()*cmap.width, (random()*cmap.height))
         rand_node = Node(target_coord)
-    if rand_node.x > 650 or rand_node.x < 0 or rand_node.y > 450 or rand_node.y < 0: 
-        print(rand_node.coord)
     #temporary cod below to be replaced
     return rand_node
     ############################################################################
