@@ -170,7 +170,7 @@ def get_global_node(local_angle, local_origin, node):
     t[1, 2] = local_origin.y
     t[2, 2] = 1
 
-    new_coord = t * (np.array(node.x, node.y, 1).T)
+    new_coord = t @ (np.array(node.x, node.y, 1).T)
 
     #temporary code below to be replaced
     new_node = Node((new_coord.reshape(-1)[0], new_coord.reshape(-1)[1]))
