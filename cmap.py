@@ -1,3 +1,4 @@
+from random import random
 import json
 import threading
 
@@ -235,7 +236,16 @@ class CozMap:
         
         #temporary code below to be replaced
         path = self.get_path()
-        return path
+        new_path = path
+
+        for i in range(1000):
+            from_node_ndx = int(random() * len(new_path))
+            to_node_ndx = int(random() * len(new_path))
+            if not self.is_collision_with_obstacles((new_path[from_node_ndx], new_path[to_node_ndx])):
+                new_path = new_path[:from_node_ndx+1] + new_path[to_node_ndx:]
+                
+
+        return new_path
 
         ############################################################################
         

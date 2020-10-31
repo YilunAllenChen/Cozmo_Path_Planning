@@ -14,7 +14,7 @@ import numpy as np
 MAX_NODES = 20000
 
 
-def step_from_to(node0, node1, limit=50):
+def step_from_to(node0, node1, limit=20):
     ########################################################################
     # TODO: please enter your code below.
     # 1. If distance between two nodes is less than limit, return node1
