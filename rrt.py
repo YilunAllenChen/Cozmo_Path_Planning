@@ -75,7 +75,7 @@ def RRT(cmap, start):
         rand_node = cmap.get_random_valid_node()
         nearest_node = None
         min_dist = float('inf')
-        for node in cmap.get_nodes:
+        for node in cmap.get_nodes():
             dist = get_dist(node, rand_node)
             if dist < min_dist:
                 min_dist = dist
