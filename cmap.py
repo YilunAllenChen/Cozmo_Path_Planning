@@ -239,8 +239,17 @@ class CozMap:
         new_path = path
 
         for i in range(1000):
-            from_node_ndx = int(random() * len(new_path))
-            to_node_ndx = int(random() * len(new_path))
+            rand_node_ndx1 = int(random() * len(new_path))
+            rand_node_ndx2 = int(random() * len(new_path))
+
+            if rand_node_ndx1 < rand_node_ndx2:
+                from_node_ndx = rand_node_ndx1
+                to_node_ndx = rand_node_ndx2
+            else:
+                from_node_ndx = rand_node_ndx2
+                to_node_ndx = rand_node_ndx1
+
+
             if not self.is_collision_with_obstacles((new_path[from_node_ndx], new_path[to_node_ndx])):
                 new_path = new_path[:from_node_ndx+1] + new_path[to_node_ndx:]
                 
