@@ -14,7 +14,7 @@ import numpy as np
 MAX_NODES = 20000
 
 
-def step_from_to(node0, node1, limit=75):
+def step_from_to(node0, node1, limit=50):
     ########################################################################
     # TODO: please enter your code below.
     # 1. If distance between two nodes is less than limit, return node1
@@ -22,11 +22,12 @@ def step_from_to(node0, node1, limit=75):
     #    distance to node0 is limit. Recall that each iteration we can move
     #    limit units at most
     # 3. Hint: please consider using np.arctan2 function to get vector angle
-    # 4. Note: remember always return a Node object
     if get_dist(node0, node1) < limit:
+    # 4. Note: remember always return a Node object
         return node1
     else:
-        theta = np.arctan2(node0.y - node1.y, node0.x - node1.x)
+        theta = np.arctan2(node1.y - node0.y, node1.x - node0.x)
+        print("{} -> {}".format( node0.coord ,(node0.x + limit * math.cos(theta), node0.y + limit * math.sin(theta)) ))
         return Node((node0.x + limit * math.cos(theta), node0.y + limit * math.sin(theta)))
     ############################################################################
 
@@ -91,7 +92,6 @@ def RRT(cmap, start):
         
         
         time.sleep(0.01)
-        cmap.add_path(nearest_node, rand_node)
         if cmap.is_solved():
             break
 
@@ -274,6 +274,9 @@ class RRTThread(threading.Thread):
             cmap.reset_paths()
         stopevent.set()
 
+
+
+
 if __name__ == '__main__':
     global cmap, stopevent
     stopevent = threading.Event()
@@ -289,8 +292,7 @@ if __name__ == '__main__':
         robot_thread = RobotThread()
         robot_thread.start()
     else:
-        cmap = CozMap("maps/map2.json", node_generator)
-        print(cmap.width, cmap.height)
+        cmap = CozMap("maps/map1.json", node_generator)
         sim = RRTThread()
         sim.start()
     visualizer = Visualizer(cmap)
